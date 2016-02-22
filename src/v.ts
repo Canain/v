@@ -100,9 +100,18 @@ const V = (() => {
 		
 	}
 	
-	return (a: number[]) => {
+	interface V {
+		(a: number[]): Vector;
+		VM?: VectorManipulate;
+	}
+	
+	const V: V = a => {
 		return new Vector(a);
 	};
+	
+	V.VM = VM;
+	
+	return V;
 })();
 
 module.exports = V;

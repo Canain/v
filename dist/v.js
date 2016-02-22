@@ -86,8 +86,10 @@ const V = (() => {
             return this;
         }
     }
-    return (a) => {
+    const V = a => {
         return new Vector(a);
     };
+    V.VM = VM;
+    return V;
 })();
 module.exports = V;
