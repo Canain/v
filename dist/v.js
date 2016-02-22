@@ -61,7 +61,7 @@ const V = (() => {
     const VM = new VectorManipulate();
     class Vector extends Array {
         constructor(a) {
-            super(a.length);
+            super();
             const arr = a.slice();
             arr['__proto__'] = Vector.prototype;
             return arr;

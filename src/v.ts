@@ -66,7 +66,7 @@ const V = (() => {
 	class Vector extends Array<number> {
 		
 		constructor(a: number[]) {
-			super(a.length);
+			super();
 			const arr = a.slice();
 			arr['__proto__'] = Vector.prototype;
 			return <Vector>arr;
