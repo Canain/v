@@ -62,9 +62,9 @@ const V = (() => {
     class Vector extends Array {
         constructor(a) {
             super(a.length);
-            for (let i = 0; i < a.length; i++) {
-                this[i] = a[i];
-            }
+            const arr = a.slice();
+            arr['__proto__'] = Vector.prototype;
+            return arr;
         }
         add(b) {
             return new Vector(VM.add(this, b));

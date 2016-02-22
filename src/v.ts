@@ -67,9 +67,9 @@ const V = (() => {
 		
 		constructor(a: number[]) {
 			super(a.length);
-			for (let i = 0; i < a.length; i++) {
-				this[i] = a[i];
-			}
+			const arr = a.slice();
+			arr['__proto__'] = Vector.prototype;
+			return <Vector>arr;
 		}
 		
 		add(b: number | number[]) {
