@@ -1,19 +1,14 @@
 'use strict';
 const V = (() => {
     class VectorManipulate {
-        addMultiple(a, b) {
-            return a.map((v, i) => {
-                return v + b[i];
-            });
-        }
-        subMultiple(a, b) {
-            return a.map((v, i) => {
-                return v - b[i];
-            });
-        }
         addSingle(a, b) {
             return a.map(v => {
                 return v + b;
+            });
+        }
+        addMultiple(a, b) {
+            return a.map((v, i) => {
+                return v + b[i];
             });
         }
         subSingle(a, b) {
@@ -21,19 +16,24 @@ const V = (() => {
                 return v - b;
             });
         }
+        subMultiple(a, b) {
+            return a.map((v, i) => {
+                return v - b[i];
+            });
+        }
         multSingle(a, b) {
             return a.map(v => {
                 return v * b;
             });
         }
-        divSingle(a, b) {
-            return a.map(v => {
-                return v / b;
-            });
-        }
         multMultiple(a, b) {
             return a.map((v, i) => {
                 return v * b[i];
+            });
+        }
+        divSingle(a, b) {
+            return a.map(v => {
+                return v / b;
             });
         }
         divMultiple(a, b) {
