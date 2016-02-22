@@ -1,101 +1,120 @@
+/// <reference path="../typings/main.d.ts" />
 'use strict';
-/// <reference path="../typings/tsd.d.ts" />
 
-interface TwoVectorProcessFunction {
-	(vec1: number[], vec2: number[]): number[];
-}
-
-interface TwoVectorNormFunction {
-	(vec1: number[], vec2: number[]): number;
-}
-
-interface VectorScalarFunction {
-	(vec: number[], scalar: number): number[];
-}
-
-interface VectorProcessFunction {
-	(vec: number[]): number[];
-}
-
-interface VectorNormFunction {
-	(vec: number[]): number;
-}
-
-interface VModule {
-	version: string;
-	
-	multiply: VectorScalarFunction;
-	divide: VectorScalarFunction;
-	add: TwoVectorProcessFunction;
-	subtract: TwoVectorProcessFunction;
-	norm: VectorNormFunction;
-	normalize: VectorProcessFunction;
-	dot: TwoVectorNormFunction;
-	
-	/** m for multiply, alias of multiply */
-	m?: VectorScalarFunction;
-	/** d for divide, alias of divide */
-	d?: VectorScalarFunction;
-	/** a for add, alias of add */
-	a?: TwoVectorProcessFunction;
-	/** s for subtract, alias of subtract */
-	s?: TwoVectorProcessFunction;
-	/** n for norm, alias of norm */
-	n?: VectorNormFunction;
-	/** h for hat, alias of normalize */
-	h?: VectorProcessFunction;
-}
-
-let V: VModule = {
-	version: '1.0.0',
-	multiply: function (vec: number[], scalar: number) {
-		return vec.map((x) => {
-			return x * scalar;
-		});
-	},
-	divide: function (vec: number[], scalar: number) {
-		return vec.map((x) => {
-			return x / scalar;
-		});
-	},
-	add: function (vec1: number[], vec2: number[]) {
-		let result = [];
-		for (let i = 0; i < vec1.length; i++) {
-			result.push(vec1[i] + vec2[i]);
+const V = (() => {
+	class VectorManipulate {
+		addMultiple(a: number[], b: number[]) {
+			return a.map((v, i) => {
+				return v + b[i];
+			});
 		}
-		return result;
-	},
-	subtract: function (vec1: number[], vec2: number[]) {
-		let result = [];
-		for (let i = 0; i < vec1.length; i++) {
-			result.push(vec1[i] - vec2[i]);
+		subMultiple(a: number[], b: number[]) {
+			return a.map((v, i) => {
+				return v - b[i];
+			});
 		}
-		return result;
-	},
-	dot: function (vec1: number[], vec2: number[]) {
-		let result = 0;
-		for (let i = 0; i < vec1.length; i++) {
-			result += vec1[i] * vec2[i];
+		addSingle(a: number[], b: number) {
+			return a.map(v => {
+				return v + b;
+			});
 		}
-		return result;
-	},
-	norm: function (vec: number[]) {
-		let result = 0;
-		vec.forEach((x) => {
-			result += x * x;
-		});
-		return Math.sqrt(result);
-	},
-	normalize: function (vec: number[]) {
-		return this.divide(vec, this.norm(vec));
+		subSingle(a: number[], b: number) {
+			return a.map(v => {
+				return v - b;
+			});
+		}
+		multSingle(a: number[], b: number) {
+			return a.map(v => {
+				return v * b;
+			});
+		}
+		divSingle(a: number[], b: number) {
+			return a.map(v => {
+				return v / b;
+			});
+		}
+		multMultiple(a: number[], b: number[]) {
+			return a.map((v, i) => {
+				return v * b[i];
+			});
+		}
+		divMultiple(a: number[], b: number[]) {
+			return a.map((v, i) => {
+				return v / b[i];
+			});
+		}
+		floor(a: number[]) {
+			return a.map(v => {
+				return Math.floor(v);
+			});
+		}
+		set(a: number[], b: { x?: number; y?: number; z?: number; }) {
+			if (typeof b.x === 'number') {
+				b.x = a[0];
+			}
+			if (typeof b.y === 'number') {
+				b.y = a[1];
+			}
+			if (typeof b.z === 'number') {
+				b.z = a[2];
+			}
+		}
 	}
-}
-
-V.m = V.multiply;
-V.d = V.divide;
-V.a = V.add;
-V.s = V.subtract;
-V.n = V.norm;
-V.h = V.normalize;
+	
+	const VM = new VectorManipulate();
+	
+	class Vector extends Array<number> {
+		
+		constructor(a: number[]) {
+			super(a.length);
+			for (let i = 0; i < a.length; i++) {
+				this[i] = a[i];
+			}
+		}
+		
+		add(b: number | number[]) {
+			if (typeof b === 'number') {
+				return new Vector(VM.addSingle(this, b));
+			}
+			return new Vector(VM.addMultiple(this, <number[]>b));
+		}
+		
+		sub(b: number | number[]) {
+			if (typeof b === 'number') {
+				return new Vector(VM.subSingle(this, b));
+			}
+			return new Vector(VM.subMultiple(this, <number[]>b));
+		}
+		
+		mult(b: number | number[]) {
+			if (typeof b === 'number') {
+				return new Vector(VM.multSingle(this, b));
+			}
+			return new Vector(VM.multMultiple(this, <number[]>b));
+		}
+		
+		div(b: number | number[]) {
+			if (typeof b === 'number') {
+				return new Vector(VM.divSingle(this, b));
+			}
+			return new Vector(VM.divMultiple(this, <number[]>b));
+		}
+		
+		floor() {
+			return new Vector(VM.floor(this));
+		}
+		
+		set(b: { x?: number; y?: number; z?: number; }) {
+			VM.set(this, b);
+			
+			return this;
+		}
+		
+	}
+	
+	return (a: number[]) => {
+		return new Vector(a);
+	};
+})();
 
 module.exports = V;

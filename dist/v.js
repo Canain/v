@@ -1,52 +1,105 @@
 'use strict';
-let V = {
-    version: '1.0.0',
-    multiply: function (vec, scalar) {
-        return vec.map((x) => {
-            return x * scalar;
-        });
-    },
-    divide: function (vec, scalar) {
-        return vec.map((x) => {
-            return x / scalar;
-        });
-    },
-    add: function (vec1, vec2) {
-        let result = [];
-        for (let i = 0; i < vec1.length; i++) {
-            result.push(vec1[i] + vec2[i]);
+const V = (() => {
+    class VectorManipulate {
+        addMultiple(a, b) {
+            return a.map((v, i) => {
+                return v + b[i];
+            });
         }
-        return result;
-    },
-    subtract: function (vec1, vec2) {
-        let result = [];
-        for (let i = 0; i < vec1.length; i++) {
-            result.push(vec1[i] - vec2[i]);
+        subMultiple(a, b) {
+            return a.map((v, i) => {
+                return v - b[i];
+            });
         }
-        return result;
-    },
-    dot: function (vec1, vec2) {
-        let result = 0;
-        for (let i = 0; i < vec1.length; i++) {
-            result += vec1[i] * vec2[i];
+        addSingle(a, b) {
+            return a.map(v => {
+                return v + b;
+            });
         }
-        return result;
-    },
-    norm: function (vec) {
-        let result = 0;
-        vec.forEach((x) => {
-            result += x * x;
-        });
-        return Math.sqrt(result);
-    },
-    normalize: function (vec) {
-        return this.divide(vec, this.norm(vec));
+        subSingle(a, b) {
+            return a.map(v => {
+                return v - b;
+            });
+        }
+        multSingle(a, b) {
+            return a.map(v => {
+                return v * b;
+            });
+        }
+        divSingle(a, b) {
+            return a.map(v => {
+                return v / b;
+            });
+        }
+        multMultiple(a, b) {
+            return a.map((v, i) => {
+                return v * b[i];
+            });
+        }
+        divMultiple(a, b) {
+            return a.map((v, i) => {
+                return v / b[i];
+            });
+        }
+        floor(a) {
+            return a.map(v => {
+                return Math.floor(v);
+            });
+        }
+        set(a, b) {
+            if (typeof b.x === 'number') {
+                b.x = a[0];
+            }
+            if (typeof b.y === 'number') {
+                b.y = a[1];
+            }
+            if (typeof b.z === 'number') {
+                b.z = a[2];
+            }
+        }
     }
-};
-V.m = V.multiply;
-V.d = V.divide;
-V.a = V.add;
-V.s = V.subtract;
-V.n = V.norm;
-V.h = V.normalize;
+    const VM = new VectorManipulate();
+    class Vector extends Array {
+        constructor(a) {
+            super(a.length);
+            for (let i = 0; i < a.length; i++) {
+                this[i] = a[i];
+            }
+        }
+        add(b) {
+            if (typeof b === 'number') {
+                return new Vector(VM.addSingle(this, b));
+            }
+            return new Vector(VM.addMultiple(this, b));
+        }
+        sub(b) {
+            if (typeof b === 'number') {
+                return new Vector(VM.subSingle(this, b));
+            }
+            return new Vector(VM.subMultiple(this, b));
+        }
+        mult(b) {
+            if (typeof b === 'number') {
+                return new Vector(VM.multSingle(this, b));
+            }
+            return new Vector(VM.multMultiple(this, b));
+        }
+        div(b) {
+            if (typeof b === 'number') {
+                return new Vector(VM.divSingle(this, b));
+            }
+            return new Vector(VM.divMultiple(this, b));
+        }
+        floor() {
+            return new Vector(VM.floor(this));
+        }
+        set(b) {
+            VM.set(this, b);
+            return this;
+        }
+    }
+    return (a) => {
+        return new Vector(a);
+    };
+})();
 module.exports = V;
