@@ -3,42 +3,42 @@
 
 const V = (() => {
 	class VectorManipulate {
-		addSingle(a: number[], b: number) {
-			return a.map(v => {
-				return v + b;
-			});
-		}
-		addMultiple(a: number[], b: number[]) {
+		add(a: number[], b: number | number[]) {
+			if (typeof b === 'number') {
+				return a.map(v => {
+					return v + b;
+				});
+			}
 			return a.map((v, i) => {
 				return v + b[i];
 			});
 		}
-		subSingle(a: number[], b: number) {
-			return a.map(v => {
-				return v - b;
-			});
-		}
-		subMultiple(a: number[], b: number[]) {
+		sub(a: number[], b: number | number[]) {
+			if (typeof b === 'number') {
+				return a.map(v => {
+					return v - b;
+				});
+			}
 			return a.map((v, i) => {
 				return v - b[i];
 			});
 		}
-		multSingle(a: number[], b: number) {
-			return a.map(v => {
-				return v * b;
-			});
-		}
-		multMultiple(a: number[], b: number[]) {
+		mult(a: number[], b: number | number[]) {
+			if (typeof b === 'number') {
+				return a.map(v => {
+					return v * b;
+				});
+			}
 			return a.map((v, i) => {
 				return v * b[i];
 			});
 		}
-		divSingle(a: number[], b: number) {
-			return a.map(v => {
-				return v / b;
-			});
-		}
-		divMultiple(a: number[], b: number[]) {
+		div(a: number[], b: number | number[]) {
+			if (typeof b === 'number') {
+				return a.map(v => {
+					return v / b;
+				});
+			}
 			return a.map((v, i) => {
 				return v / b[i];
 			});
@@ -73,31 +73,19 @@ const V = (() => {
 		}
 		
 		add(b: number | number[]) {
-			if (typeof b === 'number') {
-				return new Vector(VM.addSingle(this, b));
-			}
-			return new Vector(VM.addMultiple(this, <number[]>b));
+			return new Vector(VM.add(this, b));
 		}
 		
 		sub(b: number | number[]) {
-			if (typeof b === 'number') {
-				return new Vector(VM.subSingle(this, b));
-			}
-			return new Vector(VM.subMultiple(this, <number[]>b));
+			return new Vector(VM.sub(this, b));
 		}
 		
 		mult(b: number | number[]) {
-			if (typeof b === 'number') {
-				return new Vector(VM.multSingle(this, b));
-			}
-			return new Vector(VM.multMultiple(this, <number[]>b));
+			return new Vector(VM.mult(this, b));
 		}
 		
 		div(b: number | number[]) {
-			if (typeof b === 'number') {
-				return new Vector(VM.divSingle(this, b));
-			}
-			return new Vector(VM.divMultiple(this, <number[]>b));
+			return new Vector(VM.div(this, b));
 		}
 		
 		floor() {

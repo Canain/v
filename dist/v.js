@@ -1,42 +1,42 @@
 'use strict';
 const V = (() => {
     class VectorManipulate {
-        addSingle(a, b) {
-            return a.map(v => {
-                return v + b;
-            });
-        }
-        addMultiple(a, b) {
+        add(a, b) {
+            if (typeof b === 'number') {
+                return a.map(v => {
+                    return v + b;
+                });
+            }
             return a.map((v, i) => {
                 return v + b[i];
             });
         }
-        subSingle(a, b) {
-            return a.map(v => {
-                return v - b;
-            });
-        }
-        subMultiple(a, b) {
+        sub(a, b) {
+            if (typeof b === 'number') {
+                return a.map(v => {
+                    return v - b;
+                });
+            }
             return a.map((v, i) => {
                 return v - b[i];
             });
         }
-        multSingle(a, b) {
-            return a.map(v => {
-                return v * b;
-            });
-        }
-        multMultiple(a, b) {
+        mult(a, b) {
+            if (typeof b === 'number') {
+                return a.map(v => {
+                    return v * b;
+                });
+            }
             return a.map((v, i) => {
                 return v * b[i];
             });
         }
-        divSingle(a, b) {
-            return a.map(v => {
-                return v / b;
-            });
-        }
-        divMultiple(a, b) {
+        div(a, b) {
+            if (typeof b === 'number') {
+                return a.map(v => {
+                    return v / b;
+                });
+            }
             return a.map((v, i) => {
                 return v / b[i];
             });
@@ -67,28 +67,16 @@ const V = (() => {
             }
         }
         add(b) {
-            if (typeof b === 'number') {
-                return new Vector(VM.addSingle(this, b));
-            }
-            return new Vector(VM.addMultiple(this, b));
+            return new Vector(VM.add(this, b));
         }
         sub(b) {
-            if (typeof b === 'number') {
-                return new Vector(VM.subSingle(this, b));
-            }
-            return new Vector(VM.subMultiple(this, b));
+            return new Vector(VM.sub(this, b));
         }
         mult(b) {
-            if (typeof b === 'number') {
-                return new Vector(VM.multSingle(this, b));
-            }
-            return new Vector(VM.multMultiple(this, b));
+            return new Vector(VM.mult(this, b));
         }
         div(b) {
-            if (typeof b === 'number') {
-                return new Vector(VM.divSingle(this, b));
-            }
-            return new Vector(VM.divMultiple(this, b));
+            return new Vector(VM.div(this, b));
         }
         floor() {
             return new Vector(VM.floor(this));
