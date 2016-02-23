@@ -63,18 +63,34 @@ const V = (() => {
             V[name] = VM[name];
         });
         Object.getOwnPropertyNames(VectorManipulate.prototype).forEach(name => {
-            V[name] = VectorManipulate.prototype[name];
+            if (name !== 'constructor') {
+                Object.defineProperty(V, name, Object.getOwnPropertyDescriptor(VectorManipulate.prototype, name));
+            }
         });
         return V;
     })();
     class Vector extends Array {
         constructor(a) {
-            super();
-            const array = a.slice();
-            Object.getOwnPropertyNames(Vector.prototype).forEach(name => {
-                array[name] = Vector.prototype[name];
+            super(a.length);
+            for (let i = 0; i < a.length; i++) {
+                this[i] = a[i];
+            }
+        }
+        get length() {
+            let max = 0;
+            Object.keys(this).forEach(value => {
+                if (value.indexOf('.') > -1) {
+                    return;
+                }
+                const parsed = parseInt(value);
+                if (typeof parsed === 'number' && parsed > max) {
+                    max = parsed;
+                }
             });
-            return array;
+            return Math.max(max, this._length);
+        }
+        set length(val) {
+            this._length = val;
         }
         add(b) {
             return new Vector(V.add(this, b));
@@ -96,6 +112,17 @@ const V = (() => {
             return this;
         }
     }
+    Object.defineProperty(Vector.prototype, '_length', {
+        configurable: false,
+        enumerable: false,
+        value: 0,
+        writable: true
+    });
+    Object.getOwnPropertyNames(Array.prototype).forEach(name => {
+        if (name !== 'constructor' && name !== 'length') {
+            Object.defineProperty(Vector.prototype, name, Object.getOwnPropertyDescriptor(Array.prototype, name));
+        }
+    });
     return V;
 })();
 console.log(V([1, 2]).add([3, 4]));
