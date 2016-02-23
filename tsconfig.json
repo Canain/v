@@ -3,7 +3,8 @@
 		"target": "es6",
 		"module": "commonjs",
 		"removeComments": true,
-		"outDir": "dist"
+		"outDir": "dist",
+		"noImplicitAny": true
 	},
 	"files": [
 		"src/v.ts"

@@ -17,7 +17,7 @@ const V = (() => {
 				});
 			}
 			return a.map((v, i) => {
-				return v + b[i];
+				return v + (<number[]>b)[i];
 			});
 		}
 		sub(a: number[], b: number | number[]) {
@@ -27,7 +27,7 @@ const V = (() => {
 				});
 			}
 			return a.map((v, i) => {
-				return v - b[i];
+				return v - (<number[]>b)[i];
 			});
 		}
 		mult(a: number[], b: number | number[]) {
@@ -37,7 +37,7 @@ const V = (() => {
 				});
 			}
 			return a.map((v, i) => {
-				return v * b[i];
+				return v * (<number[]>b)[i];
 			});
 		}
 		div(a: number[], b: number | number[]) {
@@ -47,7 +47,7 @@ const V = (() => {
 				});
 			}
 			return a.map((v, i) => {
-				return v / b[i];
+				return v / (<number[]>b)[i];
 			});
 		}
 		floor(a: number[]) {
@@ -63,13 +63,17 @@ const V = (() => {
 	
 	interface VectorManipulate extends VectorManipulateInstance {
 		(a: number[]): Vector;
+		(...a: number[]): Vector;
 	}
 	
 	const V = (() => {
 		const VM = new VectorManipulateInstance();
 		
-		const V = <VectorManipulate>((a: number[]) => {
-			return new Vector(a);
+		const V = <VectorManipulate>(function () {
+			if (typeof arguments[0] === 'number') {
+				return new Vector(Array.prototype.slice.call(arguments));
+			};
+			return new Vector(arguments[0]);
 		});
 		
 		Object.getOwnPropertyNames(VM).forEach(property => {
@@ -89,30 +93,44 @@ const V = (() => {
 	
 	class Vector extends Array<number> {
 		
-		constructor(a: number[]) {
+		constructor(a: number[]);
+		constructor(...a: number[]);
+		constructor() {
 			super();
 			
-			const array = <Vector>a.slice();
+			const array: Vector = typeof arguments[0] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0];
 			
 			Object.defineProperties(array, VectorProperties);
 			
 			return array;
 		}
 		
-		add(b: number | number[]) {
-			return new Vector(V.add(this, b));
+		add(b: number): Vector;
+		add(b: number[]): Vector;
+		add(...b: number[]): Vector;
+		add() {
+			return new Vector(V.add(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
 		}
 		
-		sub(b: number | number[]) {
-			return new Vector(V.sub(this, b));
+		sub(b: number): Vector;
+		sub(b: number[]): Vector;
+		sub(...b: number[]): Vector;
+		sub() {
+			return new Vector(V.sub(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
 		}
 		
-		mult(b: number | number[]) {
-			return new Vector(V.mult(this, b));
+		mult(b: number): Vector;
+		mult(b: number[]): Vector;
+		mult(...b: number[]): Vector;
+		mult() {
+			return new Vector(V.mult(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
 		}
 		
-		div(b: number | number[]) {
-			return new Vector(V.div(this, b));
+		div(b: number): Vector;
+		div(b: number[]): Vector;
+		div(...b: number[]): Vector;
+		div() {
+			return new Vector(V.div(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
 		}
 		
 		floor() {

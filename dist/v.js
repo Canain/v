@@ -56,8 +56,12 @@ const V = (() => {
     }
     const V = (() => {
         const VM = new VectorManipulateInstance();
-        const V = ((a) => {
-            return new Vector(a);
+        const V = (function () {
+            if (typeof arguments[0] === 'number') {
+                return new Vector(Array.prototype.slice.call(arguments));
+            }
+            ;
+            return new Vector(arguments[0]);
         });
         Object.getOwnPropertyNames(VM).forEach(property => {
             Object.defineProperty(V, property, Object.getOwnPropertyDescriptor(VM, property));
@@ -71,23 +75,23 @@ const V = (() => {
     })();
     const VectorProperties = {};
     class Vector extends Array {
-        constructor(a) {
+        constructor() {
             super();
-            const array = a.slice();
+            const array = typeof arguments[0] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0];
             Object.defineProperties(array, VectorProperties);
             return array;
         }
-        add(b) {
-            return new Vector(V.add(this, b));
+        add() {
+            return new Vector(V.add(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
         }
-        sub(b) {
-            return new Vector(V.sub(this, b));
+        sub() {
+            return new Vector(V.sub(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
         }
-        mult(b) {
-            return new Vector(V.mult(this, b));
+        mult() {
+            return new Vector(V.mult(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
         }
-        div(b) {
-            return new Vector(V.div(this, b));
+        div() {
+            return new Vector(V.div(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
         }
         floor() {
             return new Vector(V.floor(this));
