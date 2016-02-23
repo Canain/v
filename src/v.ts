@@ -158,4 +158,6 @@ const V = (() => {
 	return V;
 })();
 
-module.exports = V;
+if (typeof module !== 'undefined') {
+	module.exports = V;
+}
