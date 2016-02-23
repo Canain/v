@@ -58,8 +58,11 @@ const V = (() => {
                 return p + v;
             });
         }
+        dot(a, b) {
+            return this.sum(this.mult(a, b));
+        }
         norm(a) {
-            return Math.sqrt(this.sum(this.mult(a, a)));
+            return Math.sqrt(this.dot(a, a));
         }
         normalize(a) {
             return this.div(a, this.norm(a));
@@ -120,6 +123,9 @@ const V = (() => {
         }
         normalize() {
             return new Vector(V.normalize(this));
+        }
+        dot(b) {
+            return V.dot(this, b);
         }
     }
     Object.getOwnPropertyNames(Vector.prototype).forEach(property => {

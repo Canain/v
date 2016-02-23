@@ -64,13 +64,15 @@ const V = (() => {
 				return p + v;
 			});
 		}
+		dot(a: number[], b: number[]) {
+			return this.sum(this.mult(a, b));
+		}
 		norm(a: number[]) {
-			return Math.sqrt(this.sum(this.mult(a, a)));
+			return Math.sqrt(this.dot(a, a));
 		}
 		normalize(a: number[]) {
 			return this.div(a, this.norm(a));
 		}
-		
 	}
 	
 	interface VectorManipulate extends VectorManipulateInstance {
@@ -165,6 +167,10 @@ const V = (() => {
 		
 		normalize() {
 			return new Vector(V.normalize(this));
+		}
+		
+		dot(b: number[]) {
+			return V.dot(this, b);
 		}
 	}
 	
