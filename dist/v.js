@@ -53,6 +53,17 @@ const V = (() => {
             b.x = a[0];
             b.y = a[1];
         }
+        sum(a) {
+            return a.reduce((p, v) => {
+                return p + v;
+            });
+        }
+        norm(a) {
+            return Math.sqrt(this.sum(this.mult(a, a)));
+        }
+        normalize(a) {
+            return this.div(a, this.norm(a));
+        }
     }
     const V = (() => {
         const VM = new VectorManipulateInstance();
@@ -99,6 +110,16 @@ const V = (() => {
         set(b) {
             V.set(this, b);
             return this;
+        }
+        sum() {
+            return V.sum(this);
+            ;
+        }
+        norm() {
+            return V.norm(this);
+        }
+        normalize() {
+            return new Vector(V.normalize(this));
         }
     }
     Object.getOwnPropertyNames(Vector.prototype).forEach(property => {
