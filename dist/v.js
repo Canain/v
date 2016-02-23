@@ -1,6 +1,9 @@
 'use strict';
 const V = (() => {
     class VectorManipulate {
+        constructor() {
+            this.version = '1.0.0';
+        }
         add(a, b) {
             if (typeof b === 'number') {
                 return a.map(v => {
@@ -47,49 +50,55 @@ const V = (() => {
             });
         }
         set(a, b) {
-            if (typeof b.x === 'number') {
-                b.x = a[0];
-            }
-            if (typeof b.y === 'number') {
-                b.y = a[1];
-            }
-            if (typeof b.z === 'number') {
-                b.z = a[2];
-            }
+            b.x = a[0];
+            b.y = a[1];
         }
     }
-    const VM = new VectorManipulate();
+    const V = (() => {
+        const VM = new VectorManipulate();
+        const V = ((a) => {
+            return new Vector(a);
+        });
+        Object.getOwnPropertyNames(VM).forEach(name => {
+            V[name] = VM[name];
+        });
+        Object.getOwnPropertyNames(VectorManipulate.prototype).forEach(name => {
+            V[name] = VectorManipulate.prototype[name];
+        });
+        return V;
+    })();
     class Vector extends Array {
         constructor(a) {
             super();
-            const arr = a.slice();
-            arr['__proto__'] = Vector.prototype;
-            return arr;
+            const array = a.slice();
+            Object.getOwnPropertyNames(Vector.prototype).forEach(name => {
+                array[name] = Vector.prototype[name];
+            });
+            return array;
         }
         add(b) {
-            return new Vector(VM.add(this, b));
+            return new Vector(V.add(this, b));
         }
         sub(b) {
-            return new Vector(VM.sub(this, b));
+            return new Vector(V.sub(this, b));
         }
         mult(b) {
-            return new Vector(VM.mult(this, b));
+            return new Vector(V.mult(this, b));
         }
         div(b) {
-            return new Vector(VM.div(this, b));
+            return new Vector(V.div(this, b));
         }
         floor() {
-            return new Vector(VM.floor(this));
+            return new Vector(V.floor(this));
         }
         set(b) {
-            VM.set(this, b);
+            V.set(this, b);
             return this;
         }
     }
-    const V = a => {
-        return new Vector(a);
-    };
-    V.VM = VM;
     return V;
 })();
+console.log(V([1, 2]).add([3, 4]));
+console.log(V.add([1, 2], [3, 4]));
+console.log(V.version);
 module.exports = V;
