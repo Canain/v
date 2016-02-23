@@ -1,6 +1,6 @@
 'use strict';
 const V = (() => {
-    class VectorManipulate {
+    class VectorManipulateInstance {
         constructor() {
             this.version = '1.0.0';
         }
@@ -55,28 +55,26 @@ const V = (() => {
         }
     }
     const V = (() => {
-        const VM = new VectorManipulate();
+        const VM = new VectorManipulateInstance();
         const V = ((a) => {
             return new Vector(a);
         });
-        Object.getOwnPropertyNames(VM).forEach(name => {
-            V[name] = VM[name];
+        Object.getOwnPropertyNames(VM).forEach(property => {
+            Object.defineProperty(V, property, Object.getOwnPropertyDescriptor(VM, property));
         });
-        Object.getOwnPropertyNames(VectorManipulate.prototype).forEach(name => {
-            if (name !== 'constructor') {
-                Object.defineProperty(V, name, Object.getOwnPropertyDescriptor(VectorManipulate.prototype, name));
+        Object.getOwnPropertyNames(VectorManipulateInstance.prototype).forEach(property => {
+            if (property !== 'constructor') {
+                Object.defineProperty(V, property, Object.getOwnPropertyDescriptor(VectorManipulateInstance.prototype, property));
             }
         });
         return V;
     })();
-    const setPrototypeOf = Object.setPrototypeOf || ((obj, proto) => {
-        obj.__proto__ = proto;
-    });
+    const VectorProperties = {};
     class Vector extends Array {
         constructor(a) {
             super();
             const array = a.slice();
-            setPrototypeOf(array, Vector.prototype);
+            Object.defineProperties(array, VectorProperties);
             return array;
         }
         add(b) {
@@ -99,6 +97,13 @@ const V = (() => {
             return this;
         }
     }
+    Object.getOwnPropertyNames(Vector.prototype).forEach(property => {
+        if (property !== 'constructor') {
+            const descriptor = Object.getOwnPropertyDescriptor(Vector.prototype, property);
+            descriptor.enumerable = false;
+            VectorProperties[property] = descriptor;
+        }
+    });
     return V;
 })();
 module.exports = V;
