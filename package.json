@@ -1,10 +1,12 @@
 {
   "name": "v",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generic and flexible vector library in TypeScript",
   "main": "dist/v.js",
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "postinstall": "typings install",
+		"build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -18,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/Canain/v/issues"
   },
-  "homepage": "https://github.com/Canain/v#readme"
+  "homepage": "https://github.com/Canain/v#readme",
+  "dependencies": {
+    "typescript": "^1.8.2",
+    "typings": "^0.6.8"
+  }
 }

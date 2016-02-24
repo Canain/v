@@ -1,12 +1,16 @@
 /// <reference path="../typings/main.d.ts" />
 'use strict';
 
-class VectorManipulateInstance {
+if (typeof exports === 'undefined') {
+	var exports: any = {}
+}
+
+export class VectorManipulateInstance {
 	
 	version: string;
 	
 	constructor() {
-		this.version = '1.0.1';
+		this.version = '1.0.2';
 	}
 	
 	add(a: number[], b: number | number[]) {
@@ -74,7 +78,7 @@ class VectorManipulateInstance {
 	}
 }
 
-interface VectorManipulate extends VectorManipulateInstance {
+export interface VectorManipulate extends VectorManipulateInstance {
 	(a: number[]): Vector;
 	(...a: number[]): Vector;
 }
@@ -104,7 +108,7 @@ const V = (() => {
 
 const VectorProperties: PropertyDescriptorMap = {};
 
-class Vector extends Array<number> {
+export class Vector extends Array<number> {
 	
 	constructor(a: number[]);
 	constructor(...a: number[]);
@@ -187,4 +191,7 @@ export default V;
 
 if (typeof module !== 'undefined') {
 	module.exports = V;
+	Object.keys(exports).forEach(value => {
+		module.exports[value] = exports[value];
+	});
 }

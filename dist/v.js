@@ -1,7 +1,10 @@
 'use strict';
+if (typeof exports === 'undefined') {
+    var exports = {};
+}
 class VectorManipulateInstance {
     constructor() {
-        this.version = '1.0.1';
+        this.version = '1.0.2';
     }
     add(a, b) {
         if (typeof b === 'number') {
@@ -67,6 +70,7 @@ class VectorManipulateInstance {
         return this.div(a, this.norm(a));
     }
 }
+exports.VectorManipulateInstance = VectorManipulateInstance;
 const V = (() => {
     const VM = new VectorManipulateInstance();
     const V = (function () {
@@ -127,6 +131,7 @@ class Vector extends Array {
         return V.dot(this, b);
     }
 }
+exports.Vector = Vector;
 Object.getOwnPropertyNames(Vector.prototype).forEach(property => {
     if (property !== 'constructor') {
         const descriptor = Object.getOwnPropertyDescriptor(Vector.prototype, property);
@@ -134,7 +139,11 @@ Object.getOwnPropertyNames(Vector.prototype).forEach(property => {
         VectorProperties[property] = descriptor;
     }
 });
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = V;
 if (typeof module !== 'undefined') {
     module.exports = V;
+    Object.keys(exports).forEach(value => {
+        module.exports[value] = exports[value];
+    });
 }
