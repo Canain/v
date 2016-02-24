@@ -1,0 +1,22 @@
+{
+  "name": "v",
+  "version": "1.0.0",
+  "description": "Generic and flexible vector library in TypeScript",
+  "main": "dist/v.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Canain/v.git"
+  },
+  "keywords": [
+    "vector"
+  ],
+  "author": "Shuyang Chen <sc1085@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Canain/v/issues"
+  },
+  "homepage": "https://github.com/Canain/v#readme"
+}
