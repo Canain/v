@@ -1,7 +1,7 @@
 'use strict';
 class VectorManipulateInstance {
     constructor() {
-        this.version = '1.0.0';
+        this.version = '1.0.1';
     }
     add(a, b) {
         if (typeof b === 'number') {
@@ -134,6 +134,7 @@ Object.getOwnPropertyNames(Vector.prototype).forEach(property => {
         VectorProperties[property] = descriptor;
     }
 });
+exports.default = V;
 if (typeof module !== 'undefined') {
     module.exports = V;
 }

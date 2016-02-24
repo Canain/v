@@ -1,6 +1,6 @@
 {
   "name": "v",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generic and flexible vector library in TypeScript",
   "main": "dist/v.js",
   "scripts": {

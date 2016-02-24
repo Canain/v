@@ -6,7 +6,7 @@ class VectorManipulateInstance {
 	version: string;
 	
 	constructor() {
-		this.version = '1.0.0';
+		this.version = '1.0.1';
 	}
 	
 	add(a: number[], b: number | number[]) {
@@ -182,6 +182,8 @@ Object.getOwnPropertyNames(Vector.prototype).forEach(property => {
 		VectorProperties[property] = descriptor;
 	}
 });
+
+export default V;
 
 if (typeof module !== 'undefined') {
 	module.exports = V;
