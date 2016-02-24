@@ -1,4 +1,3 @@
-/// <reference path="../typings/main.d.ts" />
 'use strict';
 
 if (typeof exports === 'undefined') {
