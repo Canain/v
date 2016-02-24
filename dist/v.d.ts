@@ -5,6 +5,7 @@ export declare class VectorManipulateInstance {
     sub(a: number[], b: number | number[]): number[];
     mult(a: number[], b: number | number[]): number[];
     div(a: number[], b: number | number[]): number[];
+    limit(a: number[], b: number | number[]): number[];
     floor(a: number[]): number[];
     set(a: number[], b: {
         x: number;
@@ -35,6 +36,9 @@ export declare class Vector extends Array<number> {
     div(b: number): Vector;
     div(b: number[]): Vector;
     div(...b: number[]): Vector;
+    limit(b: number): Vector;
+    limit(b: number[]): Vector;
+    limit(...b: number[]): Vector;
     floor(): Vector;
     set(b: {
         x: number;

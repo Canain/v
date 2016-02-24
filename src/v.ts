@@ -9,7 +9,7 @@ export class VectorManipulateInstance {
 	version: string;
 	
 	constructor() {
-		this.version = '1.0.2';
+		this.version = '1.0.3';
 	}
 	
 	add(a: number[], b: number | number[]) {
@@ -52,6 +52,18 @@ export class VectorManipulateInstance {
 			return v / (<number[]>b)[i];
 		});
 	}
+	
+	limit(a: number[], b: number | number[]) {
+		if (typeof b === 'number') {
+			return a.map(v => {
+				return Math.min(v, b);
+			});
+		}
+		return a.map((v, i) => {
+			return Math.min(v, (<number[]>b)[i]);
+		});
+	}
+	
 	floor(a: number[]) {
 		return a.map(v => {
 			return Math.floor(v);
@@ -147,6 +159,13 @@ export class Vector extends Array<number> {
 	div(...b: number[]): Vector;
 	div() {
 		return new Vector(V.div(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
+	}
+	
+	limit(b: number): Vector;
+	limit(b: number[]): Vector;
+	limit(...b: number[]): Vector;
+	limit() {
+		return new Vector(V.limit(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
 	}
 	
 	floor() {

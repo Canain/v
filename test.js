@@ -1,4 +1,3 @@
-/// <reference path="src/v.ts" />
 'use strict';
 
 const V = require('./dist/v');
