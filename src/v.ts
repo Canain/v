@@ -73,6 +73,10 @@ export class VectorManipulateInstance {
 		b.x = a[0];
 		b.y = a[1];
 	}
+	setWidthHeight(a: number[], b: { width: number; height: number; }) {
+		b.width = a[0];
+		b.height = a[1];
+	}
 	sum(a: number[]) {
 		return a.reduce((p, v) => {
 			return p + v;
@@ -86,6 +90,34 @@ export class VectorManipulateInstance {
 	}
 	normalize(a: number[]) {
 		return this.div(a, this.norm(a));
+	}
+	randomNumber(max: number, min?: number) {
+		if (typeof min === 'number') {
+			return (max - min) * Math.random() + min;
+		}
+		return max * Math.random();
+	}
+	random(length: number, max: number, min?: number) {
+		const ran: number[] = [];
+		for (let i = 0; i < length; i++) {
+			ran.push(this.randomNumber(max, min));
+		}
+		return ran;
+	}
+	randomize(max: number[], min?: number | number[]) {
+		if (typeof min === 'undefined') {
+			return max.map(v => {
+				return this.randomNumber(v);
+			});
+		}
+		if (typeof min === 'number') {
+			return max.map(v => {
+				return this.randomNumber(v, min);
+			});
+		}
+		return max.map((v, i) => {
+			return this.randomNumber(v, (<number[]>min)[i]);
+		});
 	}
 }
 
@@ -176,6 +208,18 @@ export class Vector extends Array<number> {
 		V.set(this, b);
 		
 		return this;
+	}
+	
+	setWidthHeight(b: { width: number; height: number; }) {
+		V.setWidthHeight(this, b);
+		return this;
+	}
+	
+	randomize(min: number): Vector;
+	randomize(min: number[]): Vector;
+	randomize(...min: number[]): Vector;
+	randomize() {
+		return new Vector(V.randomize(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
 	}
 	
 	sum() {

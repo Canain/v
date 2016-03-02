@@ -11,10 +11,17 @@ export declare class VectorManipulateInstance {
         x: number;
         y: number;
     }): void;
+    setWidthHeight(a: number[], b: {
+        width: number;
+        height: number;
+    }): void;
     sum(a: number[]): number;
     dot(a: number[], b: number[]): number;
     norm(a: number[]): number;
     normalize(a: number[]): number[];
+    randomNumber(max: number, min?: number): number;
+    random(length: number, max: number, min?: number): number[];
+    randomize(max: number[], min?: number | number[]): number[];
 }
 export interface VectorManipulate extends VectorManipulateInstance {
     (a: number[]): Vector;
@@ -44,6 +51,13 @@ export declare class Vector extends Array<number> {
         x: number;
         y: number;
     }): this;
+    setWidthHeight(b: {
+        width: number;
+        height: number;
+    }): this;
+    randomize(min: number): Vector;
+    randomize(min: number[]): Vector;
+    randomize(...min: number[]): Vector;
     sum(): number;
     norm(): number;
     normalize(): Vector;

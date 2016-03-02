@@ -1,19 +1,22 @@
 {
   "name": "v",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Generic and flexible vector library in TypeScript",
   "main": "dist/v.js",
   "scripts": {
-    "test": "node test.js",
-    "postinstall": "typings install",
-		"build": "tsc"
+    "test": "node test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Canain/v.git"
   },
   "keywords": [
-    "vector"
+    "vector",
+		"v",
+		"typescript",
+		"map",
+		"reduce",
+		"mapreduce"
   ],
   "author": "Shuyang Chen <sc1085@gmail.com>",
   "license": "MIT",
@@ -22,7 +25,5 @@
   },
   "homepage": "https://github.com/Canain/v#readme",
   "dependencies": {
-    "typescript": "^1.8.2",
-    "typings": "^0.6.8"
   }
 }

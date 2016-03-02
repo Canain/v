@@ -65,6 +65,10 @@ class VectorManipulateInstance {
         b.x = a[0];
         b.y = a[1];
     }
+    setWidthHeight(a, b) {
+        b.width = a[0];
+        b.height = a[1];
+    }
     sum(a) {
         return a.reduce((p, v) => {
             return p + v;
@@ -78,6 +82,34 @@ class VectorManipulateInstance {
     }
     normalize(a) {
         return this.div(a, this.norm(a));
+    }
+    randomNumber(max, min) {
+        if (typeof min === 'number') {
+            return (max - min) * Math.random() + min;
+        }
+        return max * Math.random();
+    }
+    random(length, max, min) {
+        const ran = [];
+        for (let i = 0; i < length; i++) {
+            ran.push(this.randomNumber(max, min));
+        }
+        return ran;
+    }
+    randomize(max, min) {
+        if (typeof min === 'undefined') {
+            return max.map(v => {
+                return this.randomNumber(v);
+            });
+        }
+        if (typeof min === 'number') {
+            return max.map(v => {
+                return this.randomNumber(v, min);
+            });
+        }
+        return max.map((v, i) => {
+            return this.randomNumber(v, min[i]);
+        });
     }
 }
 exports.VectorManipulateInstance = VectorManipulateInstance;
@@ -129,6 +161,13 @@ class Vector extends Array {
     set(b) {
         V.set(this, b);
         return this;
+    }
+    setWidthHeight(b) {
+        V.setWidthHeight(this, b);
+        return this;
+    }
+    randomize() {
+        return new Vector(V.randomize(this, typeof arguments[0] === 'number' && typeof arguments[1] === 'number' ? Array.prototype.slice.call(arguments) : arguments[0]));
     }
     sum() {
         return V.sum(this);
